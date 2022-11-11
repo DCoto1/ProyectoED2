@@ -1,6 +1,7 @@
 let map;
 
 function initMap() {
+  const nodosRuta = [];
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 9.748917, lng: -83.753428},
     zoom: 10,
@@ -30,7 +31,20 @@ function initMap() {
                 map.panTo(this.getPosition());
               }); 
               select.insertAdjacentHTML("beforeend", "<option value='"+ json[i].id +"'>"+ json[i].nombre +"</option>");
+              nodosRuta.push(new google.maps.LatLng(
+                json[i].latitud,
+                json[i].longitud
+              ));
             }
+            const rutaEnlazada = new google.maps.Polyline({
+              path: nodosRuta,
+              geodesic: true,
+              strokeColor: "#00000",
+              strokeOpacity: 1.0,
+              strokeWeight: 2,
+            });
+      
+            rutaEnlazada.setMap(map);
 
           }
       )
