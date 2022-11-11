@@ -3,7 +3,7 @@ package com.cenfotec.ProyectoED2.Entities;
 import java.io.Serializable;
 
 public class LugarTuristico implements Serializable {
-    private String id;
+    private int id;
     private String nombre;
     private double latitud;
     private double longitud;
@@ -11,18 +11,18 @@ public class LugarTuristico implements Serializable {
     public LugarTuristico() {
     }
 
-    public LugarTuristico(String id, String nombre, double latitud, double longitud) {
+    public LugarTuristico(int id, String nombre, double latitud, double longitud) {
         this.id = id;
         this.nombre = nombre;
         this.latitud = latitud;
         this.longitud = longitud;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

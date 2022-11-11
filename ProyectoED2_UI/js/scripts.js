@@ -3,7 +3,7 @@ let map;
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 9.748917, lng: -83.753428},
-    zoom: 12,
+    zoom: 10,
   });
   let response;
   fetch("http://localhost:8080/api/proyecto/getLugares",{
@@ -28,7 +28,6 @@ function initMap() {
               });
               google.maps.event.addListener(marker, 'click', function() {
                 map.panTo(this.getPosition());
-                map.setZoom(14);
               }); 
               select.insertAdjacentHTML("beforeend", "<option value='"+ json[i].id +"'>"+ json[i].nombre +"</option>");
             }
@@ -39,6 +38,29 @@ function initMap() {
 
 window.initMap = initMap;
 
-function llenarLugares(){
-
+function buscarLugarTuristico(){
+  console.log(document.getElementById("select").value);
+  fetch("http://localhost:8080/api/proyecto/getLugares/" + document.getElementById("select").value,{
+      headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+      }
+  })
+      .then(
+          response => {
+              return response.json();
+          }
+      )
+      .then(
+          json => {
+              map.panTo({ lat: json.latitud, lng: json.longitud });
+              map.setZoom(14);
+              // google.maps.event.addListener(marker, 'click', function() {
+              //   map.panTo(this.getPosition());
+              //   map.setZoom(14);
+              // }); 
+           
+          }
+      )
 }
+
