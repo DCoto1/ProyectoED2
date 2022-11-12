@@ -16,8 +16,8 @@ public class Controller {
     private final Gestor gestor = new Gestor();
 
     @RequestMapping("/getLugares")
-    public ArrayList<LugarTuristico> getLugares(){
-        return gestor.insertarLugares();
+    public LugarTuristico[] getLugares(){
+        return gestor.generearLugares();
     }
     @RequestMapping(value = "/getLugares/{id}")
     public LugarTuristico getLugaresByID(@PathVariable int id){
@@ -25,6 +25,14 @@ public class Controller {
             return gestor.getLugaresByID(id);
         } else {
             return null;
+        }
+    }
+    @RequestMapping(value = "/getMetros/{id1}/{id2}")
+    public double getRuta(@PathVariable int id1, @PathVariable int id2){
+        if (gestor.getLugaresByID(id1) != null && gestor.getLugaresByID(id2) != null){
+            return gestor.calcularMetros(gestor.getLugaresByID(id1), gestor.getLugaresByID(id2));
+        } else {
+            return 0;
         }
     }
 }

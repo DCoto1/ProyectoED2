@@ -3,15 +3,15 @@ package com.cenfotec.ProyectoED2.Entities;
 public class NodoArco {
     private LugarTuristico lugar;
     private int costo;
-    private NodoArco sig;
+    private NodoArco sigte;
 
     public NodoArco() {
     }
 
-    public NodoArco(LugarTuristico lugar, int costo, NodoArco sig) {
+    public NodoArco(LugarTuristico lugar, int costo, NodoArco sigte) {
         this.lugar = lugar;
         this.costo = costo;
-        this.sig = sig;
+        this.sigte = sigte;
     }
 
     public LugarTuristico getLugar() {
@@ -30,11 +30,11 @@ public class NodoArco {
         this.costo = costo;
     }
 
-    public NodoArco getSig() {
-        return sig;
+    public NodoArco getSigte() {
+        return sigte;
     }
 
-    public void setSig(NodoArco sig) {
-        this.sig = sig;
+    public void setSigte(NodoArco sigte) {
+        this.sigte = sigte;
     }
 }

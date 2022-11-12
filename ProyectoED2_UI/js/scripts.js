@@ -21,6 +21,8 @@ function initMap() {
       .then(
           json => {
             var select = document.getElementById("select");
+            var select2 = document.getElementById("select2");
+            var select3 = document.getElementById("select3");
             for (var i = 0; i < json.length; i++){
               var marker = new google.maps.Marker({
                 position: { lat: json[i].latitud, lng: json[i].longitud },
@@ -31,26 +33,29 @@ function initMap() {
                 map.panTo(this.getPosition());
               }); 
               select.insertAdjacentHTML("beforeend", "<option value='"+ json[i].id +"'>"+ json[i].nombre +"</option>");
-              nodosRuta.push(new google.maps.LatLng(
-                json[i].latitud,
-                json[i].longitud
-              ));
-            }
-            const rutaEnlazada = new google.maps.Polyline({
-              path: nodosRuta,
-              geodesic: true,
-              strokeColor: "#00000",
-              strokeOpacity: 1.0,
-              strokeWeight: 2,
-            });
+              select2.insertAdjacentHTML("beforeend", "<option value='"+ json[i].id +"'>"+ json[i].nombre +"</option>");
+              select3.insertAdjacentHTML("beforeend", "<option value='"+ json[i].id +"'>"+ json[i].nombre +"</option>");
+            //   nodosRuta.push(new google.maps.LatLng(
+            //     json[i].latitud,
+            //     json[i].longitud
+            //   ));
+            // }
+            // const rutaEnlazada = new google.maps.Polyline({
+            //   path: nodosRuta,
+            //   geodesic: true,
+            //   strokeColor: "#00000",
+            //   strokeOpacity: 1.0,
+            //   strokeWeight: 2,
+            // });
       
-            rutaEnlazada.setMap(map);
+            // rutaEnlazada.setMap(map);
+            }
 
           }
       )
 }
 
-window.initMap = initMap;
+
 
 function buscarLugarTuristico(){
   console.log(document.getElementById("select").value);
@@ -78,3 +83,25 @@ function buscarLugarTuristico(){
       )
 }
 
+function calcularRuta(){
+  fetch("http://localhost:8080/api/proyecto/getMetros/" + document.getElementById("select2").value + "/" + document.getElementById("select3").value,{
+    headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+    }
+})
+    .then(
+        response => {
+            return response.json();
+        }
+    )
+    .then(
+        json => {
+          console.log("La distancia es de: " + json + " metros");
+        }
+    )
+
+}
+
+
+window.initMap = initMap;
