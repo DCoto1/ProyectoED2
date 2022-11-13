@@ -1,7 +1,6 @@
 let map;
 
 function initMap() {
-  const nodosRuta = [];
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 9.748917, lng: -83.753428},
     zoom: 10,
@@ -35,22 +34,9 @@ function initMap() {
               select.insertAdjacentHTML("beforeend", "<option value='"+ json[i].id +"'>"+ json[i].nombre +"</option>");
               select2.insertAdjacentHTML("beforeend", "<option value='"+ json[i].id +"'>"+ json[i].nombre +"</option>");
               select3.insertAdjacentHTML("beforeend", "<option value='"+ json[i].id +"'>"+ json[i].nombre +"</option>");
-            //   nodosRuta.push(new google.maps.LatLng(
-            //     json[i].latitud,
-            //     json[i].longitud
-            //   ));
-            // }
-            // const rutaEnlazada = new google.maps.Polyline({
-            //   path: nodosRuta,
-            //   geodesic: true,
-            //   strokeColor: "#00000",
-            //   strokeOpacity: 1.0,
-            //   strokeWeight: 2,
-            // });
-      
-            // rutaEnlazada.setMap(map);
-            }
 
+            }
+            crearAristas();
           }
       )
 }
@@ -74,16 +60,12 @@ function buscarLugarTuristico(){
           json => {
               map.panTo({ lat: json.latitud, lng: json.longitud });
               map.setZoom(14);
-              // google.maps.event.addListener(marker, 'click', function() {
-              //   map.panTo(this.getPosition());
-              //   map.setZoom(14);
-              // }); 
-           
+        
           }
       )
 }
 
-function calcularRuta(){
+function calcularMetrosCostoRuta(){
   fetch("http://localhost:8080/api/proyecto/getMetros/" + document.getElementById("select2").value + "/" + document.getElementById("select3").value,{
     headers: {
         'Content-Type': 'application/json',
@@ -100,15 +82,14 @@ function calcularRuta(){
           console.log("La distancia es de: " + json + " metros");
           var monto = (json / 1.8) * 9350;
           console.log("El coste es de: " + monto + " colones");
-          crearRuta(document.getElementById("select2").value, document.getElementById("select3").value);
+        //   crearRuta(document.getElementById("select2").value, document.getElementById("select3").value);
         }
     )
 
 }
-
-function crearRuta(l1, l2){
-    let ruta = [];
-    fetch("http://localhost:8080/api/proyecto/getLugares",{
+function crearAristas(){
+    let arista = [];
+    fetch("http://localhost:8080/api/proyecto/getAristas",{
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
@@ -121,30 +102,73 @@ function crearRuta(l1, l2){
         )
         .then(
             json => {
+                console.log(json)
+                for (var i = 0; i < json.length; i++){
+                    arista.push(new google.maps.LatLng(
+                        json[i].inicio.latitud,
+                        json[i].inicio.longitud
+                    ))
+                    arista.push(new google.maps.LatLng(
+                        json[i].fin.latitud,
+                        json[i].fin.longitud
+                    ))
+                    let lineaMaps = new google.maps.Polyline({
+                        path: arista,
+                        geodesic: true,
+                        strokeColor: "#00000",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                    });
+                    lineaMaps.setMap(map);
 
-              for (var i = 0; i < json.length; i++){
-                if (json[i].id == l1 || json[i].id == l2){
-                    ruta.push(new google.maps.LatLng(
-                        json[i].latitud,
-                        json[i].longitud
-                      ));
-                    
                 }
-              }
-              map.panTo(ruta[0]);
-              let rutaEnlazada = new google.maps.Polyline({
-              path: ruta,
-              geodesic: true,
-              strokeColor: "#00000",
-              strokeOpacity: 1.0,
-              strokeWeight: 2,
-              });
-              
-              map.setZoom(10);
-              rutaEnlazada.setMap(map);
   
             }
-        )
-
+        )  
 }
+
 window.initMap = initMap;
+
+// function crearRuta(l1, l2){
+//     let ruta = [];
+//     fetch("http://localhost:8080/api/proyecto/getLugares",{
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Access-Control-Allow-Origin': '*'
+//         }
+//     })
+//         .then(
+//             response => {
+//                 return response.json();
+//             }
+//         )
+//         .then(
+//             json => {
+
+//               for (var i = 0; i < json.length; i++){
+//                 if (json[i].id == l1 || json[i].id == l2){
+//                     ruta.push(new google.maps.LatLng(
+//                         json[i].latitud,
+//                         json[i].longitud
+//                       ));
+                    
+//                 }
+//               }
+//               map.panTo(ruta[0]);
+//               let rutaEnlazada = new google.maps.Polyline({
+//               path: ruta,
+//               geodesic: true,
+//               strokeColor: "#00000",
+//               strokeOpacity: 1.0,
+//               strokeWeight: 2,
+//               });
+              
+//               map.setZoom(10);
+//               rutaEnlazada.setMap(map);
+  
+//             }
+//         )
+
+// }
+
+
