@@ -7,9 +7,9 @@ public class NodoArco {
     public NodoArco() {
     }
 
-    public NodoArco(LugarTuristico lugar, NodoArco sigte) {
+    public NodoArco(LugarTuristico lugar) {
         this.lugar = lugar;
-        this.sigte = sigte;
+        this.sigte = null;
     }
 
     public LugarTuristico getLugar() {
