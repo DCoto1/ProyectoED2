@@ -41,5 +41,8 @@ public class Controller {
     public ArrayList<Aristas> getAristas(){
         return gestor.generarAristasMapa();
     }
-
+    @RequestMapping("/getCaminoMinimo/{inicio}/{fin}")
+    public ArrayList<LugarTuristico> getCaminoMinimo(@PathVariable int inicio, @PathVariable int fin){
+        return gestor.calcularCamino(inicio, fin);
+    }
 }

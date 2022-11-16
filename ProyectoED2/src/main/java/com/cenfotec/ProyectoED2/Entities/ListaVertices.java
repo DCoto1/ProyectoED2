@@ -39,4 +39,15 @@ public class ListaVertices {
             aux = aux.getSig();
         }
     }
+    public LugarTuristico buscarLugar(int id){
+        LugarTuristico resultado = new LugarTuristico();
+        NodoVertice aux = this.getCabeza();
+        while (aux!= null){
+            if (aux.getId() == id){
+                resultado = aux.getLugar();
+            }
+            aux = aux.getSig();
+        }
+        return resultado;
+    }
 }

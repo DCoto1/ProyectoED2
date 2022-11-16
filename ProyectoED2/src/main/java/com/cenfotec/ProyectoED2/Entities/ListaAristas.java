@@ -1,12 +1,12 @@
 package com.cenfotec.ProyectoED2.Entities;
 
-public class ListaArco {
+public class ListaAristas {
     private NodoArco cabeza;
 
-    public ListaArco() {
+    public ListaAristas() {
     }
 
-    public ListaArco(NodoArco cabeza) {
+    public ListaAristas(NodoArco cabeza) {
         this.cabeza = cabeza;
     }
 

@@ -2,13 +2,13 @@ package com.cenfotec.ProyectoED2.Entities;
 
 public class NodoVertice {
     private int id;
-    private ListaArco arcos;
+    private ListaAristas arcos;
     private NodoVertice sig;
     private LugarTuristico lugar;
 
     public NodoVertice() {
         this.id = 0;
-        this.arcos = new ListaArco();
+        this.arcos = new ListaAristas();
         this.sig = null;
         this.lugar = null;
     }
@@ -17,16 +17,10 @@ public class NodoVertice {
         this.id = id;
         this.lugar = lugar;
         this.sig = null;
-        this.arcos = new ListaArco();
+        this.arcos = new ListaAristas();
 
     }
 
-    public NodoVertice(int id, ListaArco arcos, NodoVertice sig, LugarTuristico lugar) {
-        this.id = id;
-        this.arcos = arcos;
-        this.sig = sig;
-        this.lugar = lugar;
-    }
 
     public int getId() {
         return id;
@@ -36,11 +30,11 @@ public class NodoVertice {
         this.id = id;
     }
 
-    public ListaArco getArcos() {
+    public ListaAristas getArcos() {
         return arcos;
     }
 
-    public void setArcos(ListaArco arcos) {
+    public void setArcos(ListaAristas arcos) {
         this.arcos = arcos;
     }
 
