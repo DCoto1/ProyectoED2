@@ -117,6 +117,7 @@ function calcularMetrosCostoRuta(){
 
 }
 function crearRuta(){
+
     let arista = [];
     var select2 = document.getElementById("select2");
     var select3 = document.getElementById("select3");
@@ -139,13 +140,15 @@ function crearRuta(){
                         json[i].latitud,
                         json[i].longitud
                     ))
-                    let lineaMaps = new google.maps.Polyline({
+                    let lineaMaps = new google.maps.Polyline(
+                        {
                         path: arista,
                         geodesic: true,
                         strokeColor: "#0000FF",
                         strokeOpacity: 1.0,
                         strokeWeight: 2,
-                    });
+                        }
+                    );
                     initMap() 
                     lineaMaps.setMap(map);
 
@@ -156,6 +159,9 @@ function crearRuta(){
 }
 
 function crearAristas(){
+    const lineSymbol = {
+        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+      };
     let arista = [];
     fetch("http://localhost:8080/api/proyecto/getAristas",{
         headers: {
@@ -171,26 +177,24 @@ function crearAristas(){
         .then(
             json => {;
                 for (var i = 0; i < json.length; i++){
-                    arista.push(
-                        {lat: json[i].inicio.latitud,
-                        lng: json[i].inicio.longitud}
-                    )
-                    arista.push(
-                        {lat: json[i].fin.latitud,
-                        lng: json[i].fin.longitud}
-                    )
-                    
 
+                    let lineaMaps = new google.maps.Polyline({
+                        path: [{lat: json[i].inicio.latitud, lng: json[i].inicio.longitud}, {lat: json[i].fin.latitud, lng: json[i].fin.longitud}],
+                        icons: [
+                            {
+                              icon: lineSymbol,
+                              offset: "100%",
+                            },
+                          ],
+                        geodesic: true,
+                        strokeColor: "#00000",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                    });
 
+                    lineaMaps.setMap(map);
                 }
                 console.log(arista);
-                let lineaMaps = new google.maps.Polyline({
-                    path: arista,
-                    geodesic: true,
-                    strokeColor: "#00000",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2,
-                });
                 lineaMaps.setMap(map);
   
             }
