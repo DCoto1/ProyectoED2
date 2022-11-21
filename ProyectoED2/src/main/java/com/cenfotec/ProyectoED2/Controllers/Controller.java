@@ -1,7 +1,6 @@
 package com.cenfotec.ProyectoED2.Controllers;
 
 import com.cenfotec.ProyectoED2.Entities.Aristas;
-import com.cenfotec.ProyectoED2.Entities.ListaVertices;
 import com.cenfotec.ProyectoED2.Entities.LugarTuristico;
 import com.cenfotec.ProyectoED2.Gestor.Gestor;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,14 +26,6 @@ public class Controller {
             return gestor.getLugaresByID(id);
         } else {
             return null;
-        }
-    }
-    @RequestMapping(value = "/getMetros/{id1}/{id2}")
-    public double getRuta(@PathVariable int id1, @PathVariable int id2){
-        if (gestor.getLugaresByID(id1) != null && gestor.getLugaresByID(id2) != null){
-            return gestor.calcularMetros(gestor.getLugaresByID(id1), gestor.getLugaresByID(id2));
-        } else {
-            return 0;
         }
     }
     @RequestMapping("/getAristas")

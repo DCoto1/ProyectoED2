@@ -202,8 +202,6 @@ public class Gestor {
         this.conexiones.add(new NodoVerticeDoble(6, 5));
         this.listaVertices.agregarArista(6, new NodoArco(new LugarTuristico(7, "City Mall", 10.004571206763162, -84.21162770032541)));
         this.conexiones.add(new NodoVerticeDoble(7, 6));
-//        this.listaVertices.agregarArista(7, new NodoArco(new LugarTuristico(18, "Centro Recreativo Bosque de la Hoja", 10.061948941633673, -84.09526187333921)));
-//        this.conexiones.add(new NodoVerticeDoble(18, 7));
         this.listaVertices.agregarArista(18, new NodoArco(new LugarTuristico(22, "Laguna Hule", 10.295654954701105, -84.21011919423013)));
         this.conexiones.add(new NodoVerticeDoble(22, 18));
         this.listaVertices.agregarArista(22, new NodoArco(new LugarTuristico(25, "Parque Nacional Tortuguero", 10.449003303573742, -83.50685822915976)));
@@ -236,23 +234,6 @@ public class Gestor {
         } while (idTemp != idInicio);
         tmp.add(listaVertices.buscarLugar(idInicio));
         return tmp;
-    }
-
-    public double calcularMetros(LugarTuristico l1, LugarTuristico l2) {
-        double lat1 = l1.getLatitud();
-        double lat2 = l2.getLatitud();
-        double lon1 = l1.getLongitud();
-        double lon2 = l2.getLongitud();
-
-        var R = 6378.137;
-        var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
-        var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
-        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var d = R * c;
-        return d * 1000;
     }
 
     public LugarTuristico getLugaresByID(int id) {

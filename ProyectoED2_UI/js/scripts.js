@@ -1,5 +1,5 @@
 let map;
-
+let totalMetros = 0; 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 9.748917, lng: -83.753428},
@@ -18,9 +18,6 @@ function initMap() {
     )
     .then(
         json => {
-          var select = document.getElementById("select");
-          var select2 = document.getElementById("select2");
-          var select3 = document.getElementById("select3");
           for (var i = 0; i < json.length; i++){
             var marker = new google.maps.Marker({
               position: { lat: json[i].latitud, lng: json[i].longitud },
@@ -32,6 +29,7 @@ function initMap() {
             }); 
 
           }
+          document.getElementById("cantidadUbicaciones").insertAdjacentText("beforeend", json.length);
           crearAristas();
         }
     )
@@ -94,30 +92,69 @@ function buscarLugarTuristico(){
       )
 }
 
-function calcularMetrosCostoRuta(){
-  fetch("http://localhost:8080/api/proyecto/getMetros/" + document.getElementById("select2").value + "/" + document.getElementById("select3").value,{
-    headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-    }
-})
-    .then(
-        response => {
-            return response.json();
+function crearAristas(){
+    const lineSymbol = {
+        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+      };
+    fetch("http://localhost:8080/api/proyecto/getAristas",{
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         }
-    )
-    .then(
-        json => {
-          console.log("La distancia es de: " + json + " metros");
-          var monto = (json / 1.8) * 9350;
-          console.log("El coste es de: " + monto + " colones");
-        //   crearRuta(document.getElementById("select2").value, document.getElementById("select3").value);
-        }
-    )
+    })
+        .then(
+            response => {
+                return response.json();
+            }
+        )
+        .then(
+            json => {
+                var totalMetros = 0;
+                for (var i = 0; i < json.length; i++){
+                    let lineaMaps = new google.maps.Polyline({
+                        path: [{lat: json[i].inicio.latitud, lng: json[i].inicio.longitud}, {lat: json[i].fin.latitud, lng: json[i].fin.longitud}],
+                        icons: [
+                            {
+                              icon: lineSymbol,
+                              offset: "100%",
+                            },
+                          ],
+                        geodesic: true,
+                        strokeColor: "#00000",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                    });
+                    lineaMaps.setMap(map);
 
+                    var lat1 = json[i].inicio.latitud;
+                    var lat2 = json[i].fin.latitud;
+                    var lon1 = json[i].inicio.longitud;
+                    var lon2 = json[i].fin.longitud;
+
+                    var R = 6378.137;
+                    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+                    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+                    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    var d = R * c;
+                    d = d * 1000;
+                    
+                    totalMetros = totalMetros + d;
+                    
+                }
+                var monto = (totalMetros / 1.8) * 3827;
+                console.log(totalMetros);
+                console.log(monto);
+                document.getElementById("distancia").insertAdjacentText("beforeend", Math.round(totalMetros) + " metros");
+                document.getElementById("coste").insertAdjacentText("beforeend", "₡ " + Math.round(monto));
+            }
+
+        )  
 }
-function crearRuta(){
 
+function crearRuta(){
     let arista = [];
     var select2 = document.getElementById("select2");
     var select3 = document.getElementById("select3");
@@ -158,48 +195,7 @@ function crearRuta(){
         )  
 }
 
-function crearAristas(){
-    const lineSymbol = {
-        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-      };
-    let arista = [];
-    fetch("http://localhost:8080/api/proyecto/getAristas",{
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        }
-    })
-        .then(
-            response => {
-                return response.json();
-            }
-        )
-        .then(
-            json => {;
-                for (var i = 0; i < json.length; i++){
 
-                    let lineaMaps = new google.maps.Polyline({
-                        path: [{lat: json[i].inicio.latitud, lng: json[i].inicio.longitud}, {lat: json[i].fin.latitud, lng: json[i].fin.longitud}],
-                        icons: [
-                            {
-                              icon: lineSymbol,
-                              offset: "100%",
-                            },
-                          ],
-                        geodesic: true,
-                        strokeColor: "#00000",
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2,
-                    });
-
-                    lineaMaps.setMap(map);
-                }
-                console.log(arista);
-                lineaMaps.setMap(map);
-  
-            }
-        )  
-}
 window.initMap = initMap;
 
 // function crearRuta(l1, l2){
