@@ -29,7 +29,7 @@ function initMap() {
             }); 
 
           }
-          document.getElementById("cantidadUbicaciones").insertAdjacentText("beforeend", json.length);
+          document.getElementById("cantidadUbicaciones").innerText = json.length;
           crearAristas();
         }
     )
@@ -145,10 +145,8 @@ function crearAristas(){
                     
                 }
                 var monto = (totalMetros / 1.8) * 3827;
-                console.log(totalMetros);
-                console.log(monto);
-                document.getElementById("distancia").insertAdjacentText("beforeend", Math.round(totalMetros) + " metros");
-                document.getElementById("coste").insertAdjacentText("beforeend", "₡ " + Math.round(monto));
+                document.getElementById("distancia").innerText = Math.round(totalMetros) + " metros";
+                document.getElementById("coste").innerText = "₡ " + Math.round(monto);
             }
 
         )  
