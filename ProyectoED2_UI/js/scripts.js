@@ -71,7 +71,6 @@ function llenarSelects(){
 }
 
 function buscarLugarTuristico(){
-  console.log(document.getElementById("select").value);
   fetch("http://localhost:8080/api/proyecto/getLugares/" + document.getElementById("select").value,{
       headers: {
           'Content-Type': 'application/json',
@@ -143,8 +142,8 @@ function crearAristas(){
                     
                     totalMetros = totalMetros + d;
                     
-                }
-                var monto = (totalMetros / 1.8) * 3827;
+                } 
+                var monto = (totalMetros / 10) * 6075.58;
                 document.getElementById("distancia").innerText = Math.round(totalMetros) + " metros";
                 document.getElementById("coste").innerText = "₡ " + Math.round(monto);
             }
