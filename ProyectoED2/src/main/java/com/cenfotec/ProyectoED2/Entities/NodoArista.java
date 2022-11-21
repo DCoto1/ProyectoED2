@@ -1,13 +1,13 @@
 package com.cenfotec.ProyectoED2.Entities;
 
-public class NodoArco {
+public class NodoArista {
     private LugarTuristico lugar;
-    private NodoArco sigte;
+    private NodoArista sigte;
 
-    public NodoArco() {
+    public NodoArista() {
     }
 
-    public NodoArco(LugarTuristico lugar) {
+    public NodoArista(LugarTuristico lugar) {
         this.lugar = lugar;
         this.sigte = null;
     }
@@ -20,11 +20,11 @@ public class NodoArco {
         this.lugar = lugar;
     }
 
-    public NodoArco getSigte() {
+    public NodoArista getSigte() {
         return sigte;
     }
 
-    public void setSigte(NodoArco sigte) {
+    public void setSigte(NodoArista sigte) {
         this.sigte = sigte;
     }
 }

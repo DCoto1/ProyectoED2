@@ -1,20 +1,20 @@
 package com.cenfotec.ProyectoED2.Entities;
 
 public class ListaAristas {
-    private NodoArco cabeza;
+    private NodoArista cabeza;
 
     public ListaAristas() {
     }
 
-    public ListaAristas(NodoArco cabeza) {
+    public ListaAristas(NodoArista cabeza) {
         this.cabeza = cabeza;
     }
 
-    public NodoArco getCabeza() {
+    public NodoArista getCabeza() {
         return cabeza;
     }
 
-    public void setCabeza(NodoArco cabeza) {
+    public void setCabeza(NodoArista cabeza) {
         this.cabeza = cabeza;
     }
 
@@ -22,7 +22,7 @@ public class ListaAristas {
         return this.getCabeza() == null;
     }
 
-    public void agregar(NodoArco nuevo){
+    public void agregar(NodoArista nuevo){
         if (this.esVacio()){
             this.setCabeza(nuevo);
         } else {

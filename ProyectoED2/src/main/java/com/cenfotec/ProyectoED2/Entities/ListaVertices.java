@@ -29,12 +29,12 @@ public class ListaVertices {
         }
     }
 
-    public void agregarArista(int id, NodoArco nodoArco){
+    public void agregarArista(int id, NodoArista nodoArista){
         NodoVertice aux = this.getCabeza();
 
         while (aux!= null){
             if (aux.getId() == id){
-                aux.getArcos().agregar(nodoArco);
+                aux.getArcos().agregar(nodoArista);
             }
             aux = aux.getSig();
         }
