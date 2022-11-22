@@ -1,14 +1,14 @@
 package com.cenfotec.ProyectoED2.Entities;
 
-public class NodoVerticeDoble {
+public class NodoConexiones {
 
     private int vertice;
     private int verticeAnt;
 
-    public NodoVerticeDoble() {
+    public NodoConexiones() {
     }
 
-    public NodoVerticeDoble(int vertice, int verticeAnt) {
+    public NodoConexiones(int vertice, int verticeAnt) {
         this.vertice = vertice;
         this.verticeAnt = verticeAnt;
     }

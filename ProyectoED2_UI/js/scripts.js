@@ -92,6 +92,7 @@ function buscarLugarTuristico(){
 }
 
 function crearAristas(){
+    var infoWindow = new google.maps.InfoWindow();
     const lineSymbol = {
         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
       };
@@ -123,6 +124,17 @@ function crearAristas(){
                         strokeOpacity: 1.0,
                         strokeWeight: 2,
                     });
+                    // Open the InfoWindow on mouseover:
+                    google.maps.event.addListener(lineaMaps, 'mouseover', function(e) {
+                        infoWindow.setPosition(e.latLng);
+                        infoWindow.setContent("You are at " + e.latLng);
+                        infoWindow.open(map);
+                     });
+                     
+                     // Close the InfoWindow on mouseout:
+                     google.maps.event.addListener(lineaMaps, 'mouseout', function() {
+                        infoWindow.close();
+                     });
                     lineaMaps.setMap(map);
 
                     var lat1 = json[i].inicio.latitud;
