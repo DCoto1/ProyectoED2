@@ -1,6 +1,7 @@
-let map;
+let map, infowindow;
 let totalMetros = 0; 
 function initMap() {
+    infowindow = new google.maps.InfoWindow();
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 9.748917, lng: -83.753428},
     zoom: 10,
@@ -92,7 +93,6 @@ function buscarLugarTuristico(){
 }
 
 function crearAristas(){
-    var infoWindow = new google.maps.InfoWindow();
     const lineSymbol = {
         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
       };
@@ -111,6 +111,7 @@ function crearAristas(){
             json => {
                 var totalMetros = 0;
                 for (var i = 0; i < json.length; i++){
+                    peso = json[i].peso;
                     let lineaMaps = new google.maps.Polyline({
                         path: [{lat: json[i].inicio.latitud, lng: json[i].inicio.longitud}, {lat: json[i].fin.latitud, lng: json[i].fin.longitud}],
                         icons: [
@@ -124,35 +125,10 @@ function crearAristas(){
                         strokeOpacity: 1.0,
                         strokeWeight: 2,
                     });
-                    // Open the InfoWindow on mouseover:
-                    google.maps.event.addListener(lineaMaps, 'mouseover', function(e) {
-                        infoWindow.setPosition(e.latLng);
-                        infoWindow.setContent("You are at " + e.latLng);
-                        infoWindow.open(map);
-                     });
-                     
-                     // Close the InfoWindow on mouseout:
-                     google.maps.event.addListener(lineaMaps, 'mouseout', function() {
-                        infoWindow.close();
-                     });
                     lineaMaps.setMap(map);
-
-                    var lat1 = json[i].inicio.latitud;
-                    var lat2 = json[i].fin.latitud;
-                    var lon1 = json[i].inicio.longitud;
-                    var lon2 = json[i].fin.longitud;
-
-                    var R = 6378.137;
-                    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
-                    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
-                    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                    var d = R * c;
-                    d = d * 1000;
-                    
-                    totalMetros = totalMetros + d;
+                    var distancia = calcularMetros(json[i].inicio.latitud, json[i].fin.latitud, json[i].inicio.longitud, json[i].fin.longitud);
+                    crearInfoWindows(lineaMaps, json[i].peso, distancia);
+                    totalMetros = totalMetros + distancia;
                     
                 } 
                 var monto = (totalMetros / 10) * 6075.58;
@@ -162,6 +138,29 @@ function crearAristas(){
 
         )  
 }
+
+function calcularMetros(lat1, lat2, lon1, lon2){
+    var R = 6378.137;
+    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    d = d * 1000;
+
+    return d;
+}
+
+function crearInfoWindows(lineaMaps, peso, distancia){
+    google.maps.event.addListener(lineaMaps, 'click', function(event) {
+        infowindow.setContent("Distancia: " + Math.round(distancia)  + " km / Peso: " + peso);
+        infowindow.setPosition(event.latLng);
+        infowindow.open(map);
+    }); 
+}
+
 
 function crearRuta(){
     let arista = [];
