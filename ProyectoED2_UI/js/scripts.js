@@ -20,14 +20,11 @@ function initMap() {
     .then(
         json => {
           for (var i = 0; i < json.length; i++){
-            var marker = new google.maps.Marker({
+            new google.maps.Marker({
               position: { lat: json[i].latitud, lng: json[i].longitud },
               map,
               title: json[i].nombre,
             });
-            google.maps.event.addListener(marker, 'click', function() {
-              map.panTo(this.getPosition());
-            }); 
 
           }
           document.getElementById("cantidadUbicaciones").innerText = json.length;
@@ -85,11 +82,49 @@ function buscarLugarTuristico(){
       )
       .then(
           json => {
-              map.panTo({ lat: json.latitud, lng: json.longitud });
-              map.setZoom(14);
+            google.maps.event.clearListeners(map, 'mouseover');
+            initMap();
+            crearAdyacentes(json.latitud, json.longitud);
+            
         
           }
       )
+
+}
+
+function crearAdyacentes(latitud, longitud){
+    fetch("http://localhost:8080/api/proyecto/getLugaresAdyacentes/" + document.getElementById("select").value,{
+      headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+      }
+  })
+      .then(
+          response => {
+              return response.json();
+          }
+      )
+      .then(
+          json => {
+            for (var i = 0; i < json.length; i++){
+                let lineaMaps= new google.maps.Polyline(
+                    {
+                    path:  [{lat: latitud, lng: longitud}, {lat: json[i].latitud, lng: json[i].longitud}],
+                    geodesic: true,
+                    strokeColor: "#008000",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                    }
+                );
+                lineaMaps.setMap(map);
+                map.panTo({ lat: latitud, lng: longitud});
+                map.setZoom(15);
+                
+            }
+            
+        
+          }
+      )  
 }
 
 function crearAristas(){
@@ -154,7 +189,7 @@ function calcularMetros(lat1, lat2, lon1, lon2){
 }
 
 function crearInfoWindows(lineaMaps, peso, distancia){
-    google.maps.event.addListener(lineaMaps, 'click', function(event) {
+    google.maps.event.addListener(lineaMaps, 'mouseover', function(event) {
         infowindow.setContent("Distancia: " + Math.round(distancia)  + " km / Peso: " + peso);
         infowindow.setPosition(event.latLng);
         infowindow.open(map);

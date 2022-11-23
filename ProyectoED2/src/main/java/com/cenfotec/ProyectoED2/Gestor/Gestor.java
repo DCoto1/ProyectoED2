@@ -250,7 +250,6 @@ public class Gestor {
     public ArrayList<LugarTuristico> calcularCamino(int idInicio, int idFinal) {
         ArrayList<LugarTuristico> tmp = new ArrayList<>();
         int idTemp = idFinal;
-        int metros = 0;
         do {
             NodoConexiones doble = getConexionById(idTemp);
             LugarTuristico lugar = listaVertices.buscarLugar(doble.getVertice());
@@ -281,5 +280,6 @@ public class Gestor {
             }
         }
         return lugaresAdyacentes;
+
     }
 }
