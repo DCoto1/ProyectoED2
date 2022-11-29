@@ -46,9 +46,7 @@ public class Gestor {
         tmp[24] = new LugarTuristico(25, "Parque Nacional Tortuguero", 10.449003303573742, -83.50685822915976);
         return tmp;
     }
-    public ListaVertices test(){
-        return listaVertices;
-    }
+
     public ArrayList<Aristas> generarAristasMapa() {
         ArrayList<Aristas> tmp = new ArrayList<>();
         tmp.add(new Aristas(

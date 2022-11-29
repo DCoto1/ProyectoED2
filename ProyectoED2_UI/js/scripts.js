@@ -241,46 +241,4 @@ function crearRuta(){
 
 window.initMap = initMap;
 
-// function crearRuta(l1, l2){
-//     let ruta = [];
-//     fetch("http://localhost:8080/api/proyecto/getLugares",{
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Access-Control-Allow-Origin': '*'
-//         }
-//     })
-//         .then(
-//             response => {
-//                 return response.json();
-//             }
-//         )
-//         .then(
-//             json => {
-
-//               for (var i = 0; i < json.length; i++){
-//                 if (json[i].id == l1 || json[i].id == l2){
-//                     ruta.push(new google.maps.LatLng(
-//                         json[i].latitud,
-//                         json[i].longitud
-//                       ));
-                    
-//                 }
-//               }
-//               map.panTo(ruta[0]);
-//               let rutaEnlazada = new google.maps.Polyline({
-//               path: ruta,
-//               geodesic: true,
-//               strokeColor: "#00000",
-//               strokeOpacity: 1.0,
-//               strokeWeight: 2,
-//               });
-              
-//               map.setZoom(10);
-//               rutaEnlazada.setMap(map);
-  
-//             }
-//         )
-
-// }
-
 

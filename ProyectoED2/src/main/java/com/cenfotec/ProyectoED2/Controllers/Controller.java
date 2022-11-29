@@ -1,7 +1,6 @@
 package com.cenfotec.ProyectoED2.Controllers;
 
 import com.cenfotec.ProyectoED2.Entities.Aristas;
-import com.cenfotec.ProyectoED2.Entities.ListaVertices;
 import com.cenfotec.ProyectoED2.Entities.LugarTuristico;
 import com.cenfotec.ProyectoED2.Gestor.Gestor;
 import org.springframework.web.bind.annotation.CrossOrigin;
