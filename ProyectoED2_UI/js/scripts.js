@@ -190,7 +190,7 @@ function calcularMetros(lat1, lat2, lon1, lon2){
 
 function crearInfoWindows(lineaMaps, peso, distancia){
     google.maps.event.addListener(lineaMaps, 'mouseover', function(event) {
-        infowindow.setContent("Distancia: " + Math.round(distancia)  + " km / Peso: " + peso);
+        infowindow.setContent("Distancia: " + Math.round(distancia)  + " m / Peso: " + peso);
         infowindow.setPosition(event.latLng);
         infowindow.open(map);
     }); 
